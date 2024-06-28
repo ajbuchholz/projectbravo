@@ -1,0 +1,30 @@
+{% load crispy_forms_tags %}
+
+<div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 class="modal-title text-uppercase fw-bold" id="mainModalLabel">Delete Account</h3>
+    </div>
+    <div class="modal-body">
+      <form id="modalForm" novalidate method="post" action="{% url 'accounts:delete' uid=account.uid %}"
+        hx-post="{% url 'accounts:delete' uid=account.uid %}" hx-target='#mainModal'>
+        {% csrf_token %}
+        <p>
+          Are you sure you want to proceed?
+          <br>
+          This action is <span class="text-danger">irreversible</span>.
+        </p>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+        <i class="fas fa-times-circle me-1"></i>
+        Cancel
+      </button>
+      <button type="submit" class="btn btn-danger" form="modalForm">
+        <i class="fas fa-trash me-1"></i>
+        Delete
+      </button>
+    </div>
+  </div>
+</div>

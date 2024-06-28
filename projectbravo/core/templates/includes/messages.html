@@ -1,0 +1,18 @@
+{% load toast_tags %}
+
+{% if messages %}
+<div class="toast-container position-fixed top-0 end-0 p-3">
+  {% for message in messages %}
+  <div class="toast border-{{ message.tags }}-subtle" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <i class="fas fa-{% status_icon message.tags %} fa-fw text-{% status_color message.tags %} me-1"></i>
+      <strong class="me-auto text-{% status_color message.tags %}">{% status_title message.tags %}</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+      {{ message }}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}

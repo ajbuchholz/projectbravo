@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<h2 class="header-title text-uppercase">Account Settings</h2>
+<hr>
+<div class="row">
+    <div class="col-12 col-md-9">
+        <div class="card bg-secondary mb-4">
+            <div class="card-body">
+                <h4 class="account-header">Profile Details</h4>
+                <p class="subtext account-subheader">Here you can modify your account information.</p>
+                <form action="" enctype="multipart/form-data" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-12 col-md-6">{{ form.email|as_crispy_field  }}</div>
+                    <div class="col-12 col-md-6">{{ form.verify_email|as_crispy_field  }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-6">{{ form.first_name|as_crispy_field  }}</div>
+                    <div class="col-12 col-md-6">{{ form.last_name|as_crispy_field  }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-6">{{ form.date_of_birth|as_crispy_field  }}</div>
+                    <div class="col-12 col-md-6">{{ form.company|as_crispy_field  }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-md-6">{{ form.phone|as_crispy_field  }}</div>
+                    <div class="col-12 col-md-6">
+                        <label for="formFile" class="form-label">Avatar</label>
+                        <input class="form-control" type="file" name="avatar" accept="image/*" id="id_avatar">
+                    </div>
+                </div>
+                <hr>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa-sharp fa-solid fa-check mr-2"></i> Save
+                </button>
+                <button onclick="history.back()" class="btn btn-outline-secondary"4
+                    <i class="fa-sharp fa-solid fa-xmark mr-2"></i> Cancel
+                </button>
+                </form>
+            </div>
+        </div>  
+    </div>
+    <div class="col-12 col-md-3">
+        <div class="card bg-secondary">
+            <div class="card-body">
+                {% if account.is_verified %}
+                <div class="d-flex justify-content-between align-items-center">
+                    <i class="fs-4 fa-sharp fa-solid fa-check-circle text-success me-3"></i>
+                    <p class="fs-5 fw-bold d-inline mb-0">Account Verified</p>
+                </div>
+                {% else %}
+                <div class="d-flex justify-content-between align-items-center">
+                    <i class="fs-4 fa-sharp fa-solid fa-times-circle text-danger me-3"></i>
+                    <p class="fs-5 fw-bold d-inline mb-0">Account Not Verified</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>  
+        <div class="card bg-secondary mt-4">
+            <div class="card-body">
+                <h5 class="card-title account-header">Change Password</h5>
+                <p class="card-text">Modify the password associated with your account</p>
+                <a hx-get="{% url 'accounts:password_change' uid=account.uid %}" hx-target="#mainModal" class="btn btn-outline-secondary d-grid">Change Password</a>
+            </div>
+        </div>  
+        <div class="card bg-secondary mt-4">
+            <div class="card-body">
+                <h5 class="card-title account-header">Delete Account</h5>
+                <p class="card-text">You can permanently delete your account.</p>
+                <a hx-get="{% url 'accounts:delete' uid=account.uid %}" hx-target="#mainModal" class="btn btn-outline-danger d-grid">Delete Account</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-md-9">
+        <div class="card bg-secondary mb-4">
+            <div class="card-body">
+                <h4 class="card-title account-header">Connect Payment</h4>
+                <p class="subtext account-subheader">Connect your account to Stripe to begin utilizing the service</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <p class="d-inline mb-0"><i class="fa-sharp fa-solid fa-brands fa-stripe-s me-3"></i>Connect Stripe</p>
+                    <button type="button" class="btn btn-outline-secondary float-end">Connect</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

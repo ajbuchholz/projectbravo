@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block authentication %}
+<div class="register-window m-3">
+  <h1 class="authentication-title">REGISTER</h1>
+  <hr>
+  <form novalidate method="post" enctype="multipart/form-data">
+    {% csrf_token %}  
+    <div class="row">
+      <div class="col-12">
+        {{ form|crispy }} 
+      </div>
+    </div>
+    <hr>
+      <div class="d-flex justify-content-between">
+          <div>
+              <a class="authentication-link" href="{% url 'accounts:login' %}">
+                  Have an account?
+              </a>
+          </div>
+          <div>
+            <button type="submit" class="btn btn-primary">
+                <i class="fa-sharp fa-solid fa-check mr-2"></i> Register
+            </button>
+          </div>
+      </div>
+  </form>
+</div>
+{% endblock authentication %}

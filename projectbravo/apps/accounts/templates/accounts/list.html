@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<h2 class="header-title text-uppercase">Account List</h2>
+<table id="jsTable" class="table list-view nowrap" style="width: 100%;">
+  <thead>
+    <tr>
+      <th scope="col">First Name</th>
+      <th scope="col">Last Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Status</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for account in accounts %}
+    <tr>
+      <td>{{ account.first_name }}</td>
+      <td>{{ account.last_name }}</td>
+      <td><a href="mailto:{{ account.email }}">{{ account.email }}</a></td>
+      <td>
+        {% if account.is_superuser %}
+        <span class="badge bg-primary fw-normal"><i class='fas fa-user-secret fa-fw'></i> Superuser</span>
+        {% else %}
+        <span class="badge bg-secondary fw-normal"><i class='fas fa-user fa-fw'></i> Standard</span>
+        {% endif %}
+        {% if account.is_verified %}
+        <span class="badge bg-success fw-normal"><i class='fas fa-check fa-fw'></i> Verified</span>
+        {% else %}
+        <span class="badge bg-danger fw-normal"><i class='fas fa-ban fa-fw'></i> Not Verified</span>
+        {% endif %}
+      </td>
+      <td>
+        <div class="btn-group btn-group-sm">
+          <a class="btn btn-sm btn-primary" href="{% url 'accounts:settings' uid=account.uid %}" data-bs-toggle="tooltip" title="View Account">
+            <i class="fas fa-eye fa-fw"></i>
+          </a>
+        </div>
+        <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fas fa-ellipsis-v fa-fw"></i>
+        </button>
+        <div class="dropdown">
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" hx-get="{% url 'accounts:password_change' uid=account.uid %}" hx-target="#mainModal" style="cursor: pointer;">
+                <i class="fas fa-key fa-fw me-1 text-secondary"></i> Change Password
+              </a>
+            </li>
+            <li>
+                <a class="dropdown-item" hx-get="{% url 'accounts:delete' uid=account.uid %}" hx-target="#mainModal" style="cursor: pointer;">
+                  <i class="fas fa-trash fa-fw me-1 text-danger"></i> Delete Account
+                </a>
+              </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            {% if account.is_superuser %}
+            <li>
+              <a class="dropdown-item" href="{% url 'accounts:type' uid=account.uid %}">
+                <i class="fas fa-arrow-down fa-fw me-1 text-secondary"></i> Demote to Standard
+              </a>
+            </li>
+            {% else %}
+            <li>
+              <a class="dropdown-item" href="{% url 'accounts:type' uid=account.uid %}">
+                <i class="fas fa-arrow-up fa-fw me-1 text-secondary"></i> Promote to Superuser
+              </a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock content %}

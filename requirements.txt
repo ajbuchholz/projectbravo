@@ -1,0 +1,6 @@
+django
+django-cities-light
+django-crispy-forms
+crispy-bootstrap5
+pillow
+django-htmx

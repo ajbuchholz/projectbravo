@@ -1,0 +1,41 @@
+{% load static %}
+<button type="button" id="chev" class="btn sidenav-button" onclick="toggleSidebar()">
+    <i class="fas fa-chevron-right"></i>
+</button>  
+<div class="sidenav no-transition-on-load">
+    <img id="logo-img" class="img-fluid d-block" src="{% static 'img/logo.png' %}" style="width: 164px;">
+    <div class="sidenav-controls-top">
+        <a href=""><i class="fa-sharp fa-solid fa-house me-2"></i><span class="sidenav-button-text">Home</span></a>
+        <a href="{% url 'accounts:tokens' uid=user.uid %}"><i class="fa-sharp fa-solid fa-key me-2"></i><span class="sidenav-button-text">Access Tokens</span></a>
+        {% if user.is_superuser %}
+        <div>
+            <hr>
+        </div>
+        <a href="{% url 'accounts:list' %}"><i class="fa-sharp fa-solid fa-users me-2"></i><span class="sidenav-button-text">Admin View</span></a>
+        {% endif %}
+    </div>
+    {% if user.is_authenticated %}
+    <div class="sidenav-controls-bottom">
+        <div class="sidebar-account">
+            <div class="sidebar-account-top">
+                <div class="sidebar-account-information">
+                    <img class="sidebar-account-image" src="{{ user.avatar_url }}">
+                    <h6 class="sidebar-account-name">
+                        {% if user.first_name %}
+                        {{ user.get_full_name|truncatechars:12 }}
+                        {% else %}
+                        ‎
+                        {% endif %}
+                    </h6>
+                    <h6 class="sidebar-account-email">{{ user.email }}</h6>
+                </div>
+            </div>
+            <div class="sidebar-account-divider"></div>
+            <div class="sidebar-account-logout">
+                <a href="{% url 'accounts:logout' %}" class="sidebar-logout"><i class="fa-sharp fa-solid fa-arrow-right me-2"></i><span class="sidenav-button-text">Log Out</span></a>
+                <a href="{% url 'accounts:settings' uid=user.uid %}" class="sidebar-settings"><i class="fa-sharp fa-solid fa-cog mx-1"></i></a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>

@@ -1,0 +1,55 @@
+{% load static %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html data-bs-theme="dark">
+    <head>
+        <meta charset="utf-8">
+        <link rel="icon" href="{% static 'img/favicon.ico' %}">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
+        <title>Project Bravo</title>
+        <link data-n-head="1" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400&amp;display=swap">
+        <link rel="stylesheet" href="https://cdn.datatables.net/v/bs5/dt-1.13.4/r-2.4.1/datatables.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+        <link rel="stylesheet" href="{% static 'css/core.css' %}">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+        <script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/100/three.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/simplex-noise/2.4.0/simplex-noise.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/htmx/2.0.0/htmx.min.js"></script>
+        <script src="https://cdn.datatables.net/v/bs5/dt-1.13.4/r-2.4.1/datatables.min.js"></script>
+        <script src="{% static 'js/core.js' %}"></script>
+        {% if not user.is_authenticated %}
+        <script src="{% static 'js/background.js' %}" defer></script>
+        {% endif %}
+        {% block extra_head %}{% endblock %}
+    </head>
+
+    <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+        {% include "includes/messages.html" %}
+
+        {% if user.is_authenticated %}
+        {% include "includes/sidebar.html" %}
+        <div class="main">
+            {% block content %}{% endblock %}
+        </div>
+        {% endif %}
+
+        <!-- For Login and Register Page -->
+        {% if not user.is_authenticated %}
+        <canvas id="background"></canvas>
+        <div class="authentication">
+            {% block authentication %}{% endblock %}
+        </div>
+        {% endif %}
+
+        {% block home %}{% endblock %}
+
+        <div class="modal fade" id="mainModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="mainModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered"></div>
+        </div>
+    </body>
+</html>
+  
